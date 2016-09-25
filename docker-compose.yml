@@ -1,0 +1,6 @@
+neo4j:
+  image: neo4j:3.0
+  ports:
+   - "7474:7474"
+  environment:
+   - NEO4J_AUTH=none

@@ -1,6 +1,40 @@
-neo4j:
-  image: neo4j:3.0
-  ports:
-   - "7474:7474"
-  environment:
-   - NEO4J_AUTH=none
+version: '2'
+services:
+  neo4j:
+    image: 'neo4j:3.0.1'
+    restart: 'always'
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+    volumes:
+      - '/var/lib/neo4j-data:/data'
+    environment:
+    - 'NEO4J_AUTH=none'
+
+  postgres:
+     image: 'postgres:latest'
+     restart: 'always'
+     volumes:
+      - '/var/lib/postgres-data:/data'
+     ports:
+      - '5432:5432'
+     environment:
+      - 'POSTGRES_PASSWORD: service'
+      - 'POSTGRES_USER: service'
+
+  app:
+    stdin_open: true
+    tty: true
+    build: .
+    working_dir: '/bookworm'
+    volumes:
+      - '.:/bookworm'
+    ports:
+      - '3000:3000'
+    environment:
+      - 'PYTHONPATH=/bookworm:/bookworm'
+    links:
+      - 'neo4j'
+      - 'postgres'
+    command: ['python', 'api/app.py']
+

@@ -1,4 +1,4 @@
-class NotImplemented(Exception):
+class NotImplementedException(Exception):
     status_code = 501
 
     def __init__(self, message, status_code=None, payload=None):

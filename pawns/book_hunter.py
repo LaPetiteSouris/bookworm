@@ -20,7 +20,7 @@ def find_node(db, label, node_name):
     if node:
         pass
     else:
-        log.info('creating new node', label=label, name=node_name)
+        log.info('creating new node', extra={'label': label, 'node_name': node_name})
         node = py2neo.Node(label, name=node_name)
         db.create(node)
     return node
@@ -35,8 +35,7 @@ def connect_node(db, start_node, end_node, relation_type):
     :param relation_type:
     :return: None
     """
-    log.info('Connecting 2 nodes', start_node=start_node.properties['name'], end_node=end_node.properties['name'],
-             relation_type=relation_type)
+    log.info('Connecting 2 nodes', extra={'start': start_node, 'end': end_node, 'relation': relation_type})
     relationship = py2neo.Relationship(start_node, relation_type, end_node)
     db.create(relationship)
 
@@ -62,18 +61,27 @@ def find_authors(db):
     :param db:
     :return: all author nodes
     """
-    return db.cypher.execute('MATCH (n:Author) RETURN n LIMIT 50')
+    return db.run('MATCH (n:Author) RETURN n LIMIT 50')
 
 
-def crawl_google_book(authors):
+def crawl_google_book_to_db(db, authors):
+    log.info('Crawling Google books to graph database')
     for author in authors:
-        query_google_book.query_book_by_author(author)
+        author_node = author[0]
+        books = query_google_book.query_book_by_author(author=author_node['name'], max_res=20)
+
+        for book in books:
+            book_node = find_node(db, 'Book', node_name=book.get('name'))
+            connect_node(db, start_node=author_node, end_node=book_node, relation_type='write')
 
 
 @click.command()
 def main():
     db = neo4j.create_connection()
     log.info('Start crawling')
+    print(db.run('MATCH (n:Author) RETURN n LIMIT 50').evaluate())
+    authors_in_db = find_authors(db)
+    crawl_google_book_to_db(db, authors_in_db)
 
 
 if __name__ == '__main__':

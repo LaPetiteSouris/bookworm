@@ -36,5 +36,4 @@ services:
     links:
       - 'neo4j'
       - 'postgres'
-    command: ['python', 'api/wsgi.py']
 

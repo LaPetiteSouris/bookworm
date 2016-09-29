@@ -1,0 +1,13 @@
+config:
+  target: 'http://138.68.67.137:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 20
+  defaults:
+    headers:
+      X-Mocking: 'Enabled'
+
+scenarios:
+  - flow:
+    - get:
+        url: "/book_recommendation"

@@ -5,3 +5,4 @@ flask==0.11.0
 flask-restful==0.3.5
 click==5.0
 gunicorn==19.6.0
+numpy==1.11.0

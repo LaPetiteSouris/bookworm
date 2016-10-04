@@ -37,4 +37,4 @@ def query_book_by_author(author, max_res=1):
 
     res = requests.get(uri)
 
-    return [format_book_result(book) for book in res.json().get('items')] if res.status_code == 200 else None
+    return [format_book_result(book) for book in res.json().get('items')] if res.json().get('item') else None

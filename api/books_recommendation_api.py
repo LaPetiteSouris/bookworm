@@ -1,4 +1,4 @@
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, g
 
 from api.errors.api_exception import NotImplementedException
 from api.handlers import feedback
@@ -7,6 +7,20 @@ from utils import logger
 
 book_api = Blueprint('book_api', __name__)
 log = logger.define_logger('books recommendation api')
+
+
+def after_this_request(func):
+    if not hasattr(g, 'call_after_request'):
+        g.call_after_request = []
+    g.call_after_request.append(func)
+    return func
+
+
+@book_api.after_request
+def per_request_callbacks(response):
+    for func in getattr(g, 'call_after_request', ()):
+        response = func(response)
+    return response
 
 
 @book_api.route('/ping', methods=['GET'])
@@ -35,7 +49,7 @@ def send_book_feedback():
     log.info('serving test response',
              extra={'endpoint': '/feed_back', 'method': request.method, 'request': str(request.json)})
     feedback.on_like_click(request.json)
-    
+
     return jsonify({'data_received': True}), 20
 
 

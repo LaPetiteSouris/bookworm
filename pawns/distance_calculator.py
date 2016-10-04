@@ -1,6 +1,5 @@
 import itertools
 
-import click
 import numpy as np
 
 from database import neo4j
@@ -39,12 +38,7 @@ def update_user_distance(graph, user_list):
         graph.update_relation_props(relation, {'value': dist})
 
 
-@click.command()
-def main():
+def launch():
     graph_client = neo4j.SmartGraph(log=log)
     user_list = find_users(graph_client.graph)
     update_user_distance(graph_client, user_list)
-
-
-if __name__ == '__main__':
-    main()

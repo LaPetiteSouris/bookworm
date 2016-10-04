@@ -27,28 +27,26 @@ class SmartGraph:
             self.graph.create(node)
         return node
 
-    def connect_node(self, start_node, end_node, relation_type):
+    def create_relation(self, start_node, end_node, relation_type='writes'):
 
-        """ Connect 2 node in the graph
+        """ Create relation if 2 node is not yet connected
+
         :param start_node:
         :param end_node:
         :param relation_type:
         :return: None
         """
-        self.log.info('Connecting 2 nodes', extra={'start': start_node, 'end': end_node, 'relation': relation_type})
-        relationship = py2neo.Relationship(start_node, relation_type, end_node)
-        self.graph.create(relationship)
 
-    def update_relation(self, start_node, end_node, relation_type='writes'):
-
-        """ Update author-book relation
-
-        :param start_node: Author node
-        :param end_node: Book node
-        :param relation_type:
-        :return: None
-        """
-        relationship = next(self.graph.match(start_node=start_node, end_node=end_node, rel_type=relation_type))
+        relationship = next(self.graph.match(start_node=start_node, end_node=end_node, rel_type=relation_type), None)
 
         if relationship is None:
-            self.connect_node(start_node=start_node, end_node=end_node, relation_type=relation_type)
+            self.log.info('Connecting 2 nodes', extra={'start': start_node, 'end': end_node, 'relation': relation_type})
+            relationship = py2neo.Relationship(start_node, relation_type, end_node)
+            self.graph.create(relationship)
+        return relationship
+
+    def update_relation_props(self, relation, props):
+        for k, v in props.items():
+            self.log.info('updating relation props', extra={'prop': k, 'value': v})
+            relation[k] = v
+            relation.push()

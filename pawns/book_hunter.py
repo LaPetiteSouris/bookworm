@@ -23,7 +23,7 @@ def crawl_google_book_to_db(graph_client, authors):
 
         for book in books:
             book_node = graph_client.find_node('Book', node_name=book.get('name'))
-            graph_client.connect_node(start_node=author_node, end_node=book_node, relation_type='write')
+            graph_client.create_relation(start_node=author_node, end_node=book_node, relation_type='write')
 
 
 @click.command()

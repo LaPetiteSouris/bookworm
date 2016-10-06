@@ -3,6 +3,7 @@ MAINTAINER Tung Hoang
 
 
 ENV INSTALL_PATH /bookworm
+ENV URI 'http://bookworm_graph:ipbmX4LiLDcLHpM77RYX@hobby-knhkoomjfhocgbkeonmkpenl.dbs.graphenedb.com:24789/db/data/'
 RUN mkdir -p $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH

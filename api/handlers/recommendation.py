@@ -1,8 +1,9 @@
-from database import neo4j
+from database import neo4j, config
 from utils import logger, query_google_book
 
 log = logger.define_logger('books recommendation')
-graph_client = neo4j.SmartGraph(log=log)
+graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
+
 
 
 def on_recommendation_requested(req_body, distance='euclidean'):

@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from database import neo4j
+from database import neo4j, config
 from utils import logger
 
 log = logger.define_logger('Distance Calculator')
@@ -39,6 +39,6 @@ def update_user_distance(graph, user_list):
 
 
 def launch():
-    graph_client = neo4j.SmartGraph(log=log)
+    graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
     user_list = find_users(graph_client.graph)
     update_user_distance(graph_client, user_list)

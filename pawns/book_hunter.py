@@ -1,4 +1,4 @@
-from database import neo4j
+from database import neo4j, config
 from utils import logger, query_google_book
 
 log = logger.define_logger('Book Hunter')
@@ -29,7 +29,7 @@ def crawl_google_book_to_db(graph_client, authors):
 
 
 def launch():
-    graph_client = neo4j.SmartGraph(log=log)
+    graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
     log.info('Start crawling')
     authors_in_db = find_authors(graph_client.graph)
 

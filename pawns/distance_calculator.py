@@ -35,7 +35,7 @@ def update_user_distance(graph, user_list):
     for user1, user2 in itertools.combinations(user_node_list, 2):
         dist = calculate_distance(graph.graph, user1, user2)
         relation = graph.create_relation(user1, user2, 'distance')
-        graph.update_relation_props(relation, {'value': dist})
+        graph.update_relation_props(relation, {'euclidean': dist})
 
 
 def launch():

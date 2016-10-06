@@ -1,7 +1,7 @@
 from database import neo4j
 from utils import logger
 
-log = logger.define_logger('books recommendation api')
+log = logger.define_logger('books feedback')
 graph = neo4j.SmartGraph(log=log)
 
 

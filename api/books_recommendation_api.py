@@ -1,7 +1,7 @@
 from flask import request, Blueprint, jsonify, g
 
 from api.errors.api_exception import NotImplementedException
-from api.handlers import feedback
+from api.handlers import feedback, recommendation
 from api.mock_response import mock_recommendation
 from utils import logger
 
@@ -50,7 +50,7 @@ def send_book_feedback():
              extra={'endpoint': '/feed_back', 'method': request.method, 'request': str(request.json)})
     feedback.on_like_click(request.json)
 
-    return jsonify({'data_received': True}), 20
+    return jsonify({'data_received': True}), 200
 
 
 @book_api.route('/book_recommendation', methods=['GET'])
@@ -59,4 +59,13 @@ def get_recommended_book():
         log.info('serving mock',
                  extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json)})
         return jsonify(mock_recommendation), 200
+
+    elif request.headers.get('X-Mocking') == 'Disabled':
+        res = jsonify(recommendation.on_recommendation_requested(request))
+
+        log.info('serving endpoint under construction',
+                 extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json),
+                        'response': res})
+        return res, 200
+
     raise NotImplementedException('This endpoint has not been implemented', status_code=501)

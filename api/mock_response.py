@@ -1,6 +1,6 @@
 mock_recommendation = {
     'user_id': 'test',
-    'recommendation': {
+    'recommendation': [{
         'name': 'Le Sphinx des glaces',
         'author': 'Jules Vernes',
         'url': 'https://www.amazon.fr/Sphinx-glaces-Jules-Verne/dp/2253045721',
@@ -22,5 +22,17 @@ mock_recommendation = {
                        " Len Guy a bien tout son bon sens, et l'entraîner dans les plus merveilleuses et terribles aventures... "
                        "Le Sphinx des glaces, suite inattendue des Aventures d'Arthur Gordon Pym, est l'un des derniers grands romans de Jules Vern",
         'created_at': '2016-09-26 07:57:55.554093'
-    }
+    },
+        {
+            'name': 'White Fang',
+            'author': 'Jack London',
+            'url': 'http://books.google.fr/books?id=uoK3hWAbIR4C&dq=intitle:white+fang&hl=&source=gbs_api',
+            "icon": {
+                "smallThumbnail": "http://books.google.com/books/content?id=uoK3hWAbIR4C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+                "thumbnail": "http://books.google.com/books/content?id=uoK3hWAbIR4C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            },
+            'created_at': '2016-09-26 07:57:55.554093',
+            'description': "An abridged version of the adventures in the northern wilderness of a dog who is part wolf and how he comes to make his peace with man.",
+        }
+    ]
 }

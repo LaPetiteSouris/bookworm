@@ -26,3 +26,13 @@ CREATE (user1)-[:like {weight:1}]->(Around_the_World)
 CREATE (user2)-[:like {weight:1}]->(Jules_Vernes)
 CREATE (user2)-[:like {weight:1}]->(Around_the_World)
 ```
+
+## Book recommendation query
+
+```
+MATCH (u:User)-[d:distance]-(:User)-[r:like]->(b:Book)
+WHERE u.id='user1'
+WITH *
+ORDER BY d.euclidean
+RETURN b
+```

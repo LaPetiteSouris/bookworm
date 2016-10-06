@@ -1,4 +1,5 @@
 import os
+from time import gmtime, strftime
 
 import requests
 
@@ -13,7 +14,8 @@ def format_book_result(res):
             'author': volume_info.get('authors')[0] if volume_info.get('authors') else None,
             'description': volume_info.get('description'),
             'url': volume_info.get('infoLink'),
-            'icon': volume_info.get('imageLinks')}
+            'icon': volume_info.get('imageLinks'),
+            'created_at': strftime("%Y-%m-%d %H:%M:%S", gmtime())}
 
 
 def format_query_params(param):
@@ -37,4 +39,19 @@ def query_book_by_author(author, max_res=1):
 
     res = requests.get(uri)
 
-    return [format_book_result(book) for book in res.json().get('items')] if res.json().get('item') else None
+    return [format_book_result(book) for book in res.json().get('items')] if res.json().get('items') else None
+
+
+def query_book_by_name(name, max_res=1):
+    """ Send query to Google Book API
+
+    :param name: book's name
+    :param max_res: max result to find
+    :return: a list of trimmed response
+    """
+    params = '?q=intitle:{}&maxResults={}&key={}'.format(format_query_params(name), max_res, GOOGLE_BOOK_API_KEY)
+    uri = ''.join([GOOGLE_BOOK_BASE_URL, params])
+
+    res = requests.get(uri)
+
+    return [format_book_result(book) for book in res.json().get('items')] if res.json().get('items') else None

@@ -1,19 +1,12 @@
 from flask import request, Blueprint, jsonify, g
 
-from api.errors.api_exception import NotImplementedException
-from api.handlers import feedback, recommendation
+from api.errors.api_exception import NotImplementedException, UnauthorizedException
+from api.handlers import feedback, recommendation, user_auth
 from api.mock_response import mock_recommendation
 from utils import logger
 
 book_api = Blueprint('book_api', __name__)
 log = logger.define_logger('books recommendation api')
-
-
-def after_this_request(func):
-    if not hasattr(g, 'call_after_request'):
-        g.call_after_request = []
-    g.call_after_request.append(func)
-    return func
 
 
 @book_api.after_request
@@ -26,6 +19,24 @@ def per_request_callbacks(response):
 @book_api.route('/ping', methods=['GET'])
 def index():
     return jsonify({'response': 'pong'}), 200
+
+
+@book_api.route('/signup', methods=['POST'])
+def signup():
+    user_id = user_auth.on_user_signup(request)
+
+    if not user_id:
+        raise UnauthorizedException('User already exists', status_code=401)
+
+    return jsonify({'user_created': True, 'user_id': user_id}), 200
+
+
+@book_api.route('/login', methods=['POST'])
+def login():
+    if user_auth.on_user_auth_request(request):
+        return jsonify({'user_authenticated': True}), 200
+
+    raise UnauthorizedException('User not authorized', status_code=403)
 
 
 @book_api.route('/book_list', methods=['POST'])
@@ -60,12 +71,9 @@ def get_recommended_book():
                  extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json)})
         return jsonify(mock_recommendation), 200
 
-    elif request.headers.get('X-Mocking') == 'Disabled':
-        res = jsonify(recommendation.on_recommendation_requested(request))
+    res = jsonify(recommendation.on_recommendation_requested(request))
 
-        log.info('serving endpoint under construction',
-                 extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json),
-                        'response': res})
-        return res, 200
-
-    raise NotImplementedException('This endpoint has not been implemented', status_code=501)
+    log.info('serving endpoint',
+             extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json),
+                    'response': res})
+    return res, 200

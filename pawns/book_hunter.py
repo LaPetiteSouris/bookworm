@@ -10,7 +10,7 @@ def find_authors(db_graph):
     :param db_graph:
     :return: all author nodes
     """
-    return db_graph.run('MATCH (n:Author) RETURN n LIMIT 50')
+    return db_graph.cypher.execute('MATCH (n:Author) RETURN n LIMIT 50')
 
 
 def crawl_google_book_to_db(graph_client, authors):

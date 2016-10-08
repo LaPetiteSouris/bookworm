@@ -14,7 +14,7 @@ def find_users(db_graph):
     :param db_graph:
     :return: all user nodes
     """
-    return db_graph.run('MATCH (n:User) RETURN n')
+    return db_graph.cypher.execute('MATCH (n:User) RETURN n')
 
 
 def calculate_distance(db_graph, user1, user2):

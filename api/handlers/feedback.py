@@ -23,5 +23,5 @@ def on_like_click(req_body):
     # Update relation between user and author, +1 in the weight if user like one book written by this author
     user_author_rel = graph.create_relation(user_node, author_node, relation_type='like')
     # Increment weighted like between author and user
-    weight = user_author_rel.get('weight', 0)
+    weight = user_author_rel.properties.get('weight', 0)
     graph.update_relation_props(user_author_rel, {'weight': weight + 1})

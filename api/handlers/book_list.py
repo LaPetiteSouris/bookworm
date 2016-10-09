@@ -19,6 +19,9 @@ def on_book_list_requested(req_body):
         book_node = graph.find_node(label='Book', node_name=title)
         author_node = graph.find_node(label='Author', node_name=author)
 
+        # Update relationship between author and book
+        graph.create_relation(author_node, book_node, 'writes')
+
         # Update relation between user and book
         user_book_rel = graph.create_relation(user_node, book_node, relation_type='like')
         graph.update_relation_props(user_book_rel, {'weight': 1})

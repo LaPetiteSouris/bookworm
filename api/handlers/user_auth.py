@@ -42,15 +42,16 @@ def on_user_auth_request(request):
     user = db.users.find_one({'username': username})
 
     if not user:
-        return False
+        return None
 
     user_pwd_hash = user.get('password')
     pwd_in_request = hmac_helper.make_hmac(SECRET_KEY.encode('UTF-8'), password.encode('UTF-8'))
+    user_id = user.get('user_id')
 
     # ToDo: Should user HMAC Verification to avoid unsafe hmac string comparison
     if user_pwd_hash == pwd_in_request:
-        log.info('user authenticated', extra={'user_id': user.get('user_id')})
-        return True
+        log.info('user authenticated', extra={'user_id': user_id})
+        return user_id
 
-    log.info('user authenticated', extra={'user_in_request': username, 'password_in_request': password})
-    return False
+    log.info('user authentication requested', extra={'user_in_request': username, 'password_in_request': password})
+    return None

@@ -1,7 +1,7 @@
 from flask import request, Blueprint, jsonify, g
 
-from api.errors.api_exception import NotImplementedException, UnauthorizedException
-from api.handlers import feedback, recommendation, user_auth
+from api.errors.api_exception import UnauthorizedException
+from api.handlers import feedback, recommendation, user_auth, book_list
 from api.mock_response import mock_recommendation
 from utils import logger
 
@@ -33,19 +33,21 @@ def signup():
 
 @book_api.route('/login', methods=['POST'])
 def login():
-    if user_auth.on_user_auth_request(request):
-        return jsonify({'user_authenticated': True}), 200
+    user_id = user_auth.on_user_auth_request(request)
+
+    if user_id:
+        return jsonify({'user_authenticated': True, 'user_id': user_id}), 200
 
     raise UnauthorizedException('User not authorized', status_code=403)
 
 
 @book_api.route('/book_list', methods=['POST'])
 def send_book_list():
-    if request.headers.get('X-Mocking') == 'Enabled':
-        log.info('serving mock',
-                 extra={'endpoint': '/book_list', 'method': request.method, 'request': str(request.json)})
-        return jsonify({'data_received': True}), 200
-    raise NotImplementedException('This endpoint has not been implemented', status_code=501)
+    log.info('serving data',
+             extra={'endpoint': '/book_list', 'method': request.method, 'request': str(request.json)})
+    book_list.on_book_list_requested(request)
+
+    return jsonify({'data_received': True}), 200
 
 
 @book_api.route('/book_feedback', methods=['POST'])

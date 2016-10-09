@@ -3,7 +3,7 @@ from time import gmtime, strftime
 
 import requests
 
-GOOGLE_BOOK_API_KEY = os.getenv('GOOGLE_BOOK_API_KEY', '')
+GOOGLE_BOOK_API_KEY = os.getenv('GOOGLE_BOOK_API_KEY', 'AIzaSyCeUh088FTqVAQ6Z0PTF1SxyAMqZNJAhx8')
 GOOGLE_BOOK_BASE_URL = 'https://www.googleapis.com/books/v1/volumes'
 
 

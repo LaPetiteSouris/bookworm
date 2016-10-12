@@ -26,7 +26,7 @@ def signup():
     user_id = user_auth.on_user_signup(request)
 
     if not user_id:
-        raise UnauthorizedException('User already exists', status_code=401)
+        raise UnauthorizedException('User or email already exists', status_code=401)
 
     return jsonify({'user_created': True, 'user_id': user_id}), 200
 

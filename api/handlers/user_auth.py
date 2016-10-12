@@ -16,8 +16,11 @@ graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
 def on_user_signup(request):
     username = request.args.get('username')
     password = request.args.get('password')
+    lastname = request.args.get('lastname')
+    firstname = request.args.get('firstname')
+    email = request.args.get('email')
 
-    user = db.users.find_one({'username': username})
+    user = db.users.find_one({'username': username, 'email': email})
 
     # Check if user exists
     if user:
@@ -27,7 +30,9 @@ def on_user_signup(request):
 
     user_id = str(uuid.uuid4())
     hmac_pass = hmac_helper.make_hmac(SECRET_KEY.encode('UTF-8'), password.encode('UTF-8'))
-    db.users.insert({'user_id': user_id, 'username': username, 'password': hmac_pass})
+    db.users.insert(
+        {'user_id': user_id, 'username': username, 'password': hmac_pass, 'firstname': firstname, 'lastname': lastname,
+         'email': email})
     log.info('new user created', extra={'user_id': user_id})
 
     # Todo: Create new user node in Graph DB

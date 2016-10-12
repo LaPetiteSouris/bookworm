@@ -14,11 +14,11 @@ graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
 
 
 def on_user_signup(request):
-    username = request.args.get('username')
-    password = request.args.get('password')
-    lastname = request.args.get('lastname')
-    firstname = request.args.get('firstname')
-    email = request.args.get('email')
+    username = request.json.get('username')
+    password = request.json.get('password')
+    lastname = request.json.get('lastname')
+    firstname = request.json.get('firstname')
+    email = request.json.get('email')
 
     user = db.users.find_one({'username': username, 'email': email})
 
@@ -42,8 +42,8 @@ def on_user_signup(request):
 
 
 def on_user_auth_request(request):
-    username = request.args.get('username')
-    password = request.args.get('password')
+    username = request.json.get('username')
+    password = request.json.get('password')
     user = db.users.find_one({'username': username})
 
     if not user:

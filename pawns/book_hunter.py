@@ -17,7 +17,7 @@ def crawl_google_book_to_db(graph_client, authors):
     log.info('Crawling Google books to graph database')
     for author in authors:
         author_node = author[0]
-        books = query_google_book.query_book_by_author(author=author_node['name'], max_res=20)
+        books = query_google_book.query_book_by_author(author=author_node['name'], max_res=30)
 
         # If no book is found for this author, pass
         if not books:
@@ -34,3 +34,5 @@ def launch():
     authors_in_db = find_authors(graph_client.graph)
 
     crawl_google_book_to_db(graph_client, authors_in_db)
+
+launch()

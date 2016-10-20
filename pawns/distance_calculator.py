@@ -21,7 +21,7 @@ def calculate_distance(db_graph, user1, user2):
     query = "MATCH (u1:User)-[x:like]->(item) , (u2:User)-[y:like]->(item) WHERE u1.id='{}' AND u2.id='{}' RETURN x,y".format(
         str(user1['id']), str(user2['id']))
 
-    result = list(db_graph.run(query))
+    result = list(db_graph.cypher.execute(query))
 
     user1_vector = np.array([item[0]['weight'] for item in result])
     user2_vector = np.array([item[1]['weight'] for item in result])

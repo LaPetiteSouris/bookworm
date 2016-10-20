@@ -27,7 +27,7 @@ class SmartGraph:
             self.graph.create(node)
         return node
 
-    def create_relation(self, start_node, end_node, relation_type='writes'):
+    def create_relation(self, start_node, end_node, relation_type='write'):
 
         """ Create relation if 2 node is not yet connected
 

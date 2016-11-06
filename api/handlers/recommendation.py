@@ -11,7 +11,7 @@ def on_recommendation_requested(req_body, distance='euclidean'):
     user_id = req_body.args.get('user_id')
 
     # Get recommended book, list by based on user's similarity score
-    query = "MATCH (u:User)-[d:distance]-(:User)-[r:like]->(b:Book) WHERE u.id='{}' WITH * ORDER BY d.{} RETURN b.name".format(
+    query = "MATCH (u:User)-[d:distance]-(:User)-[r:like]->(b:Book) WHERE u.name='{}' WITH * ORDER BY d.{} RETURN b.name".format(
         user_id, distance)
     recommended_book_records = graph_client.graph.cypher.execute(query)
 

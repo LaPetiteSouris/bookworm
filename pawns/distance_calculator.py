@@ -18,8 +18,8 @@ def find_users(db_graph):
 
 
 def calculate_distance(db_graph, user1, user2):
-    query = "MATCH (u1:User)-[x:like]->(item) , (u2:User)-[y:like]->(item) WHERE u1.id='{}' AND u2.id='{}' RETURN x,y".format(
-        str(user1['id']), str(user2['id']))
+    query = "MATCH (u1:User)-[x:like]->(item) , (u2:User)-[y:like]->(item) WHERE u1.name='{}' AND u2.name='{}' RETURN x,y".format(
+        str(user1['name']), str(user2['name']))
 
     result = list(db_graph.cypher.execute(query))
 
@@ -35,6 +35,7 @@ def update_user_distance(graph, user_list):
     for user1, user2 in itertools.combinations(user_node_list, 2):
         dist = calculate_distance(graph.graph, user1, user2)
         relation = graph.create_relation(user1, user2, 'distance')
+        log.info('updating user distance', extra={'user_1': user1, 'user_2': user2})
         graph.update_relation_props(relation, {'euclidean': dist})
 
 
@@ -42,3 +43,6 @@ def launch():
     graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
     user_list = find_users(graph_client.graph)
     update_user_distance(graph_client, user_list)
+
+
+launch()

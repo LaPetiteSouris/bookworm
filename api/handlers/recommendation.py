@@ -6,7 +6,6 @@ graph_client = neo4j.SmartGraph(log=log, uri=config.URI)
 
 
 def on_recommendation_requested(req_body, distance='euclidean'):
-
     # Parse info from request body
     user_id = req_body.args.get('user_id')
 
@@ -20,12 +19,12 @@ def on_recommendation_requested(req_body, distance='euclidean'):
 
     for item in recommended_book_records:
         book_name = item[0]
-        book_info = query_google_book.query_book_by_name(book_name)
+        info_books = query_google_book.query_book_by_name(book_name, max_res=5)
 
-        if not book_info:
+        if not info_books:
             continue
 
-        recommendation_book_list.append(book_info[0])
+        recommendation_book_list.append(book[0] for book in info_books)
 
     return {'user_id': user_id,
             'recommendation': recommendation_book_list}

@@ -83,7 +83,7 @@ def get_recommended_book():
 
 
 @book_api.route('/book_ranking', methods=['GET'])
-def get_recommended_book():
+def get_book_ranking():
     if request.headers.get('X-Mocking') == 'Enabled':
         log.info('serving mock',
                  extra={'endpoint': '/book_ranking', 'method': request.method, 'request': str(request.json)})

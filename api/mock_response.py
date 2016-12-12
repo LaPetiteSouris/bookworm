@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 mock_recommendation = {
     'user_id': 'test',
     'recommendation': [{
@@ -82,7 +83,7 @@ mock_ranking = {
             'url': 'https://www.amazon.fr/Automatique-Systèmes-linéaires-Systèmes-représentation/dp/2100738712/ref=sr_1_2?ie=UTF8&qid=1481558876&sr=8-2&keywords=automatique',
             "icon": {
                 "smallThumbnail": "http://www.images.hachette-livre.fr/media/imgArticle/DUNOD/2008/9782100497324-G.jpg",
-                "thumbnail": "http://www.images.hachette-livre.fr/media/imgArticle/DUNOD/2008/9782100497324-G.jpg
+                "thumbnail": "http://www.images.hachette-livre.fr/media/imgArticle/DUNOD/2008/9782100497324-G.jpg"
             },
             'created_at': '2016-09-26 07:57:55.554093',
             'description': "Cet ouvrage très didactique part des systèmes linéaires pour arriver aux aspects les plus complexes de l'automatique.",

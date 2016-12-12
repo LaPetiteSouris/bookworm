@@ -2,7 +2,7 @@ from flask import request, Blueprint, jsonify, g
 
 from api.errors.api_exception import UnauthorizedException
 from api.handlers import feedback, recommendation, user_auth, book_list
-from api.mock_response import mock_recommendation
+from api.mock_response import mock_recommendation, mock_ranking
 from utils import logger
 
 book_api = Blueprint('book_api', __name__)
@@ -79,3 +79,13 @@ def get_recommended_book():
              extra={'endpoint': '/book_recommendation', 'method': request.method, 'request': str(request.json),
                     'response': res})
     return res, 200
+
+
+
+@book_api.route('/book_ranking', methods=['GET'])
+def get_recommended_book():
+    if request.headers.get('X-Mocking') == 'Enabled':
+        log.info('serving mock',
+                 extra={'endpoint': '/book_ranking', 'method': request.method, 'request': str(request.json)})
+        return jsonify(mock_ranking), 200
+    raise NotImplementedException('This endpoint has not been implemented', status_code=501)

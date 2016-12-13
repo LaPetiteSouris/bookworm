@@ -1,11 +1,15 @@
 import os
 from time import gmtime, strftime
+import importlib
+import sys
 
 import requests
 
 GOOGLE_BOOK_API_KEY = os.getenv('GOOGLE_BOOK_API_KEY', 'AIzaSyCeUh088FTqVAQ6Z0PTF1SxyAMqZNJAhx8')
 GOOGLE_BOOK_BASE_URL = 'https://www.googleapis.com/books/v1/volumes'
 
+importlib.reload(sys)
+sys.setdefaultencoding('utf-8')
 
 def format_book_result(res):
     volume_info = res.get('volumeInfo')

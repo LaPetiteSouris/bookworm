@@ -34,7 +34,7 @@ def query_book_by_author(author, max_res=1):
     :param max_res: max result to find
     :return: a list of trimmed response
     """
-    params = '?q=inauthor:{}&maxResults={}&key={}'.format(format_query_params(author), max_res, GOOGLE_BOOK_API_KEY)
+    params ='?q=inauthor:{}&maxResults={}&key={}'.format(format_query_params(author.encode('utf-8')), max_res, GOOGLE_BOOK_API_KEY)
     uri = ''.join([GOOGLE_BOOK_BASE_URL, params])
 
     res = requests.get(uri)
@@ -49,7 +49,7 @@ def query_book_by_name(name, max_res=1):
     :param max_res: max result to find
     :return: a list of trimmed response
     """
-    params = '?q=intitle:{}&maxResults={}&key={}'.format(format_query_params(name), max_res, GOOGLE_BOOK_API_KEY)
+    params ='?q=intitle:{}&maxResults={}&key={}'.format(format_query_params(name.encode('utf-8')), max_res, GOOGLE_BOOK_API_KEY)
     uri = ''.join([GOOGLE_BOOK_BASE_URL, params])
 
     res = requests.get(uri)
